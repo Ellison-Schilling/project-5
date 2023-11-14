@@ -69,6 +69,8 @@
                <!-- columns 5 to 10 -->
             </div>
             <!-- brevet -->
+            <td><button name="submit">Submit</button></td>
+            <td><button name="display">Display</button></td>
             <br />  <!-- a little vertical space -->
             <!-- Although we do not use tables for general page layout, they are
                appropriate for something that really is a table, like this
@@ -110,14 +112,12 @@
                <!-- col -->
             </div>
             <!-- brevet -->
-            <td><button name="submit">Submit</button></td>
-            <td><button name="display">Display</button></td>
          </form>
          <script type="text/javascript">
             var SCRIPT_ROOT = {{ request.script_root|tojson|safe }} ;
-            var TIME_CALC_URL = SCRIPT_ROOT + "/_calc_times";
-            var GET_URL = SCRIPT_ROOT + "/display";
-            var SAVE_URL = SCRIPT_ROOT + "/submit";
+            var TIME_CALC_URL = SCRIPT_ROOT + "/_calc_times";  // Route to calculating times
+            var GET_URL = SCRIPT_ROOT + "/display";   // Route to displaying brevet table
+            var SAVE_URL = SCRIPT_ROOT + "/submit";   // Route to storing a brevet table
 
             function calc_times(control) {
                
@@ -181,43 +181,39 @@
                   $('#submit').click(
                     function(event) {
                         event.preventDefault();
-                        // Referencing by tag type (input) and attribute (name)
-                        // Notice the difference between this and referencing by class (.)
-                        // and referencing by id (#).
-                        //var title = $("input[name='title']").val(); 
+                        
+                        var total_distance = $("#brevet_dist_km").val();   // Total distance of the race
+                        var date_time = $("#begin_date").val();   // Starting date and time of the race
+                        var control_data= [];    // Empty list that will contain a dictionary of data related to the control brevets
 
-                        // Empty array of list rowss that we will fill with a for loop
-                        var brevets= [];
-                        // For every brevet (go to line 52 and see ways to reference brevets: by tag (tr) or
-                        // by class (listrows). Class is better because it's more specific in this case.
+                        // For every brevet (go to line 52 and see ways to reference brevets: by tag (control_time_table) or
+                        // by class (control). Class is better because it's more specific in this case.
                         // And we don't want to accidentally pick up the table header brevet.
-                        $('.control_time_table').each(function() {
+                        $('.control').each(function() {
                             // Find the brevet object
                             var brevet = $(this);
-                            var miles = brevet.find("input[name='miles']").val();
-                            var kilometers = brevet.find("input[name='kilometers']").val();
-                            var location = brevet.find("input[name='location']").val();
+                            var kilometers = brevet.find("input[name='km']").val();
                             var open = brevet.find("input[name='open']").val();
                             var close = brevet.find("input[name='close']").val();
 
                             // If not empty, append to our list.
-                            if (miles) {
+                            if (kilometers) {
                                 // Construct a dictionary
                                  var rowjson = {
-                                    "miles": miles, 
                                     "kilometers": kilometers,
-                                    "location": location,
                                     "open": open,
                                     "close": close,
                                 }
                                 // Push to list
-                                brevets.push(rowjson);
+                                control_data.push(rowjson);
                             }
                         });
-                        console.log(brevets);
                         // Construct the data we will be sending Flask
                         var new_table = {
-                            "brevets": brevets};
+                           "total_distance" : total_distance,
+                           "date_time" : date_time,
+                           "control_data" : control_data
+                        };
                         // Perfect! Now we have all the information that the user's entered
                         // into the form. All we have to do is send a POST request to have
                         // the backend store it in the database!
@@ -260,24 +256,22 @@
                         // Feel free to replace it with a $.ajax call like the one in #insert.
                         $.getJSON(GET_URL /* Send no data */).done(
                           function(data) {
-                             console.log(data);
-                              if (data.status == 1) {
-                                  console.log("Successfully fetched: ", data);
-                                  var brevet = data.result.brevets;
-                                  
-                                  // For each brevet in the HTML table
-                                  $('.control_time_table').each(function(index) {
-                                      var row = $(this); // This is our brevet
-                                      // Clear existing values
-                                      row.find("input[name='miles']").val(brevet[index].miles);
-                                      row.find("input[name='kilometers']").val(brevet[index].kilometers);
-                                      row.find("input[name='location']").val(brevet[index].location);
-                                      row.find("input[name='open']").val(brevet[index].open);
-                                      row.find("input[name='close']").val(brevet[index].close);
-                                  });
+                           console.log(data);
+                           if (data.status == 1) {
+                                 console.log("Successfully fetched: ", data);
+                                 var brevet = data.result.brevets;
+                                 
+                                 // For each brevet in the HTML table
+                                 $('.control_time_table').each(function(index) {
+                                    var row = $(this); // This is our brevet
+                                    // Clear existing values
+                                    row.find("input[name='km']").val(brevet[index].kilometers);
+                                    row.find("input[name='open']").val(brevet[index].open);
+                                    row.find("input[name='close']").val(brevet[index].close);
+                                 });
                               }
-                              else {
-                                  console.log("Fetch failed: ", data);
+                           else {
+                                 console.log("Fetch failed: ", data);
                               }
                            }
                          ).fail(function(err){

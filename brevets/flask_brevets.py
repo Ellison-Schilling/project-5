@@ -103,11 +103,13 @@ def submit():
         # if successful, input_json is automatically parsed into a python dictionary!
         
         # Because input_json is a dictionary, we can do this:
-        brevets = input_json["brevets"] # Should be a list of dictionaries of brevet information
+        total_distance = input_json["total_distance"]   # Should be a string containing the total distance of the race 
+        date_time = input_json["date_time"]         # Should be a string containing the date_time
+        control_data = input_json["control_data"]   # Should be a list of dictionaries of brevet information
 
-        brevets_id = my_db.insert_brevets(brevets)  # Make a call to our database file to store the brevets
+        brevets_id = my_db.insert_brevets(total_distance, date_time, control_data)  # Make a call to our database file to store the brevets
 
-        return flask.jsonify(result={"brevets" : brevets},
+        return flask.jsonify(result={},
                         message="Submitted!", 
                         status=1, # This is defined by you. You just read this value in your javascript.
                         mongo_id=brevets_id)
@@ -132,9 +134,12 @@ def display():
     JSON interface: gets JSON, responds with JSON
     """
     try:
-        brevets = my_db.get_brevets()
+        total_distance, date_time, control_data = my_db.get_brevets()   # Fetch the data from the database
         return flask.jsonify(
-                result={"brevets": brevets}, 
+                result={"total_distance" : total_distance,  # Return the data to json
+                         "date_time" : date_time,
+                         "control_data" : control_data
+                        }, 
                 status=1,
                 message="Successfully fetched the brevets!")
     except:
