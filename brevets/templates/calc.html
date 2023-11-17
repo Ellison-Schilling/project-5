@@ -67,10 +67,10 @@
                   <input type="datetime-local" name="begin_date" id="begin_date" value="2021-01-01T00:00" />
                </div>
                <!-- columns 5 to 10 -->
+               <button id="submit">Submit</button>
+            <button id="display">Display</button>
             </div>
             <!-- brevet -->
-            <td><button name="submit">Submit</button></td>
-            <td><button name="display">Display</button></td>
             <br />  <!-- a little vertical space -->
             <!-- Although we do not use tables for general page layout, they are
                appropriate for something that really is a table, like this
@@ -176,10 +176,9 @@
                        // Then calculate times for this entry
                        calc_times(control_entry);
                     });
-
+            $(document).ready(function(){
                   // Insert event
-                  $('#submit').click(
-                    function(event) {
+                  $('#submit').click(function(event) {
                         event.preventDefault();
                         
                         var total_distance = $("#brevet_dist_km").val();   // Total distance of the race
@@ -191,18 +190,27 @@
                         // And we don't want to accidentally pick up the table header brevet.
                         $('.control').each(function() {
                             // Find the brevet object
-                            var brevet = $(this);
-                            var kilometers = brevet.find("input[name='km']").val();
-                            var open = brevet.find("input[name='open']").val();
-                            var close = brevet.find("input[name='close']").val();
-
-                            // If not empty, append to our list.
-                            if (kilometers) {
+                           var brevet = $(this);
+                            
+                           var kilometers = brevet.find("input[name='km']").val();
+                           var miles = brevet.find("input[name='miles']").val();
+                           var open = brevet.find("input[name='open']").val();
+                           var close = brevet.find("input[name='close']").val();
+                           
+                            // Clear out data
+                           brevet.find("input[name='miles']").val('');
+                           brevet.find("input[name='km']").val('');
+                           brevet.find("input[name='open']").val('');
+                           brevet.find("input[name='close']").val('');
+                           
+                           // If not empty, append to our list.
+                           if (kilometers) {
                                 // Construct a dictionary
                                  var rowjson = {
                                     "kilometers": kilometers,
                                     "open": open,
                                     "close": close,
+                                    "miles": miles
                                 }
                                 // Push to list
                                 control_data.push(rowjson);
@@ -212,8 +220,8 @@
                         var new_table = {
                            "total_distance" : total_distance,
                            "date_time" : date_time,
-                           "control_data" : control_data
-                        };
+                           "control_data" : control_data};
+
                         // Perfect! Now we have all the information that the user's entered
                         // into the form. All we have to do is send a POST request to have
                         // the backend store it in the database!
@@ -244,44 +252,52 @@
                           error: function(err){
                            console.log("Error: ", err); }
                         });
-                    }
-                );
+                    });
+
                 // Now we display the saved data
-                $('#display').click(
-                    function(event) {
+                $('#display').click(function(event) {
                         event.preventDefault();
                         // We use getJSON because we're sending a GET request.
                         // getJSON is essentially running $.ajax as well, but sets the defaults for us.
                         // So we're just using it for convenience.
                         // Feel free to replace it with a $.ajax call like the one in #insert.
-                        $.getJSON(GET_URL /* Send no data */).done(
-                          function(data) {
+                        $.getJSON(GET_URL).done(function(data) {
                            console.log(data);
                            if (data.status == 1) {
                                  console.log("Successfully fetched: ", data);
-                                 var brevet = data.result.control_data;
-                                 
+                                 var brevets = data.result.control_data;
+                                 var total_distance = $("#brevet_dist_km").val(data.result.total_distance);
+                                 var date_time = $("#begin_date").val(data.result.date_time);
+                                 var n_brevets = brevets.length;
+
                                  // For each brevet in the HTML table
-                                 $('.control_time_table').each(function(index) {
+                                 $('.control').each(function(index) {
                                     var row = $(this); // This is our brevet
+                                    
                                     // Clear existing values
-                                    row.find("input[name='km']").val(brevet[index].kilometers);
-                                    row.find("input[name='open']").val(brevet[index].open);
-                                    row.find("input[name='close']").val(brevet[index].close);
+                                    row.find("input[name='km']").val('');
+                                    row.find("input[name='miles']").val('');
+                                    row.find("input[name='open']").val('');
+                                    row.find("input[name='close']").val('');
+                                    
+                                    // See if we need to fill in any columns
+                                    if (index < n_brevets){
+                                       row.find("input[name='km']").val(brevets[index].kilometers);
+                                       row.find("input[name='miles']").val(brevets[index].miles);
+                                       row.find("input[name='open']").val(brevets[index].open);
+                                       row.find("input[name='close']").val(brevets[index].close);
+                                    }
                                  });
-                              }
-                           else {
+                              } else {
                                  console.log("Fetch failed: ", data);
                               }
-                           }
-                         ).fail(function(err){
+                           }).fail(function(err){
                            // In case you get an error...
                            console.log("Error: ", err);
-                         });
-                    }
-                );
+                     });
+                  });
+               });
             });
-
          </script>
       </div>
    </body>

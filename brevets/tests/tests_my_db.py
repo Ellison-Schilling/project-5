@@ -5,9 +5,10 @@ Write your tests HERE AND ONLY HERE.
 """
 
 import nose    # Testing framework
-from my_db import insert_brevets
-from my_bd import get_brevets
 import logging
+import flask_brevets
+from flask_brevets import insert_brevets
+from flask_brevets import get_brevets
 
 logging.basicConfig(format='%(levelname)s:%(message)s',
                     level=logging.WARNING)
@@ -40,7 +41,7 @@ def test_get_brevets():
     retrieved_brevets = get_brevets()
 
     # Check if the retrieval was successful 
-    assert result[0][0]["km"] ==  0
+    assert result[0][0]["kilometers"] ==  0
     assert result[0][0]["open"] == "2022-04-01T00:00"
     assert result[0][0]["close"] == "2022-04-01T01:00"
     assert result[1] == "2022-04-01T00:00"

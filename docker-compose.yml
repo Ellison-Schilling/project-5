@@ -1,14 +1,14 @@
 version: '3'
 
 services:
-    brevets:
-        build: brevets/.
-        ports: 
-          - "5001:5000"
-        depends_on:
-          - mongo
-        environment:
-          MONGODB_HOSTNAME: 'mongodb'
-    mongo:
-      image: mongo:5.0.5
+  brevets:
+    build: brevets/.
+    ports: 
+      - "5001:5000"
+    depends_on:
+      - mongodb
+    environment:
+      MONGODB_HOSTNAME: mongodb
+  mongodb:
+    image: mongo:5.0.5
     
