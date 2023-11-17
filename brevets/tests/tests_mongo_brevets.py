@@ -1,19 +1,11 @@
 """
-Nose tests for my_db.py
+Nose tests for flask_brevets PyMongo functions
 
 Write your tests HERE AND ONLY HERE.
 """
 
 import nose    # Testing framework
-import logging
-import flask_brevets
-from flask_brevets import insert_brevets
-from flask_brevets import get_brevets
-
-logging.basicConfig(format='%(levelname)s:%(message)s',
-                    level=logging.WARNING)
-log = logging.getLogger(__name__)
-
+from mongo_brevets import insert_brevets, get_brevets
 
 def test_insert_brevets():
     # Test inserting brevets into the database

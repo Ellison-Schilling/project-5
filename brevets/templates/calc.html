@@ -196,12 +196,16 @@
                            var miles = brevet.find("input[name='miles']").val();
                            var open = brevet.find("input[name='open']").val();
                            var close = brevet.find("input[name='close']").val();
+                           var location = brevet.find("input[name='location']").val();
+
                            
                             // Clear out data
                            brevet.find("input[name='miles']").val('');
                            brevet.find("input[name='km']").val('');
                            brevet.find("input[name='open']").val('');
                            brevet.find("input[name='close']").val('');
+                           brevet.find("input[name='location']").val('');
+
                            
                            // If not empty, append to our list.
                            if (kilometers) {
@@ -210,7 +214,8 @@
                                     "kilometers": kilometers,
                                     "open": open,
                                     "close": close,
-                                    "miles": miles
+                                    "miles": miles,
+                                    "location": location
                                 }
                                 // Push to list
                                 control_data.push(rowjson);
@@ -279,6 +284,8 @@
                                     row.find("input[name='miles']").val('');
                                     row.find("input[name='open']").val('');
                                     row.find("input[name='close']").val('');
+                                    row.find("input[name='location']").val('');
+
                                     
                                     // See if we need to fill in any columns
                                     if (index < n_brevets){
@@ -286,6 +293,8 @@
                                        row.find("input[name='miles']").val(brevets[index].miles);
                                        row.find("input[name='open']").val(brevets[index].open);
                                        row.find("input[name='close']").val(brevets[index].close);
+                                       row.find("input[name='location']").val(brevets[index].location);
+
                                     }
                                  });
                               } else {
