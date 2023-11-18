@@ -1,5 +1,21 @@
 # Nose tests #
 
-Write 5 test cases for `../acp_times.py` in `test_acp_times.py`. Remeber: you have to write them based on the original website.
+Jump into your container and run `./run_tests.sh`.
 
-Also remember you must run the tests from the parent directory to access `acp_times`. You can just use `run_tests.sh` for that, like in project 3.
+```shell
+docker-compose exec <your_service> bash 
+```
+
+Note that you should not enter the tests directory, `run_tests.sh` will take care of everything. 
+
+
+For example on project 5 we run:
+
+
+`docker-compose exec brevets bash`
+
+
+then:
+
+`./run_tests.sh`
+

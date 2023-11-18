@@ -22,7 +22,7 @@ def test_insert_brevets():
 def test_get_brevets():
     # Test retrieving brevets from the database
     
-    control_data = [ {"kilometers" : 0, "open" :"2022-04-01T00:00" , "close" : "2022-04-01T01:00"}, ]
+    control_data = [ {"kilometers" : "0", "open" :"2022-04-01T00:00" , "close" : "2022-04-01T01:00"}, ]
     total_distance = "200"
     date_time = "2022-04-01T00:00"
 
@@ -33,8 +33,8 @@ def test_get_brevets():
     retrieved_brevets = get_brevets()
 
     # Check if the retrieval was successful 
-    assert result[0][0]["kilometers"] ==  0
-    assert result[0][0]["open"] == "2022-04-01T00:00"
-    assert result[0][0]["close"] == "2022-04-01T01:00"
-    assert result[1] == "2022-04-01T00:00"
-    assert result[2] == 200
+    assert retrieved_brevets[2][0]["kilometers"] ==  "0"
+    assert retrieved_brevets[2][0]["open"] == "2022-04-01T00:00"
+    assert retrieved_brevets[2][0]["close"] == "2022-04-01T01:00"
+    assert retrieved_brevets[1] == "2022-04-01T00:00"
+    assert retrieved_brevets[0] == "200"

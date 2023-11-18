@@ -72,7 +72,7 @@ def _calc_times():
     
     # Happens on invalid input simply does not return anything helpful
     if open_time == None:
-        return None
+        return error
 
     open_time = arrow.get(open_time)
 
@@ -80,7 +80,7 @@ def _calc_times():
     
     # Happens on invalid input does not return anything helpful
     if open_time == None:
-        return None
+        return error
 
     close_time = arrow.get(close_time)  
 
