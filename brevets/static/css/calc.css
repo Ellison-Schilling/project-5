@@ -1,8 +1,141 @@
-/*
- * Styles for ACP control calculator
- * (Fill in as desired)
- *
  * These should not conflict with bootstrap's CSS, but they may 
- * add more specific styles. 
- */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff;
+    color: #333;
+    line-height: 1.6;
+}
 
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h1 {
+    color: #007acc;
+    text-align: center;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+p {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #666;
+}
+
+.brevet {
+    margin-bottom: 40px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    font-weight: bold;
+    margin-right: 15px;
+    color: #007acc;
+}
+
+select, input[type="datetime-local"] {
+    padding: 10px;
+    border: 1px solid #007acc;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #ffffff;
+    color: #333;
+}
+
+button {
+    background-color: #007acc;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+    background-color: #005fa3;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+.control_time_table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.control_time_table th, .control_time_table td {
+    border: none;
+    padding: 15px;
+    text-align: left;
+}
+
+.control_time_table th {
+    background-color: #007acc;
+    color: white;
+}
+
+.control_time_table tr:nth-child(even) {
+    background-color: #f0f8ff;
+}
+
+.control_time_table tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+.control_time_table input[type="number"],
+.control_time_table input[type="text"],
+.control_time_table input[type="datetime-local"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #007acc;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #ffffff;
+    color: #333;
+}
+
+.flashes {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.flashes li {
+    background-color: #ff6347;
+    color: #ffffff;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    .brevet {
+        padding: 15px;
+    }
+
+    .control_time_table th, .control_time_table td {
+        padding: 10px;
+    }
+}
