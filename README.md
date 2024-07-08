@@ -1,4 +1,4 @@
-# UOCIS322 - Project 5 Brevets, but with Mongo Now
+# UOCIS322 - Project 5 Brevets with MongoDB
 
 
 # Descriptions
